@@ -1,7 +1,7 @@
 controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/Controller/Mvc/
+        namespace: App\Controller\Mvc
     type: attribute
 api-controllers:
     resource:
