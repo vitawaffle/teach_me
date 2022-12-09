@@ -15,12 +15,19 @@ use Doctrine\ORM\Mapping\{
     Column,
 };
 use JsonSerializable;
+use Symfony\Component\Security\Core\User\{
+    UserInterface,
+    PasswordAuthenticatedUserInterface,
+};
 
 #[
     Entity(repositoryClass: UserRepository::class),
     Table(name: 'users')
 ]
-class User extends IntIdEntity implements JsonSerializable
+class User extends IntIdEntity implements
+    JsonSerializable,
+    UserInterface,
+    PasswordAuthenticatedUserInterface
 {
     /** @var Collection<Role> $roles */
     #[
@@ -59,11 +66,6 @@ class User extends IntIdEntity implements JsonSerializable
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
     public function setPassword(?string $password): self
     {
         $this->password = $password;
@@ -85,5 +87,31 @@ class User extends IntIdEntity implements JsonSerializable
             'username' => $this->username,
             'roles' => $this->roles->toArray(),
         ];
+    }
+
+    /** @inheritDoc */
+    public function getRoles(): array
+    {
+        return array_map(
+            fn ($role) => $role->getName(),
+            $this->roles->toArray()
+        );
+    }
+
+    /** @inheritDoc */
+    public function eraseCredentials(): void
+    {
+    }
+
+    /** @inheritDoc */
+    public function getUserIdentifier(): string
+    {
+        return $this->username ?? '';
+    }
+
+    /** @inheritDoc */
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 }
