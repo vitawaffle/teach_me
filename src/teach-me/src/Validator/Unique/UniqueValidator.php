@@ -24,7 +24,7 @@ class UniqueValidator extends ConstraintValidator
         if (!is_subclass_of($constraint->entityClass, AppEntity::class)) {
             throw new UnexpectedTypeException(
                 $constraint->entityClass,
-                SqlEntity::class,
+                AppEntity::class,
             );
         }
 
@@ -32,7 +32,10 @@ class UniqueValidator extends ConstraintValidator
             return;
         }
 
-        if (!property_exists($value, $constraint->columnName)) {
+        if (!property_exists(
+            $constraint->entityClass,
+            $constraint->columnName,
+        )) {
             throw new InvalidColumnNameException(
                 $constraint->entityClass,
                 $constraint->columnName,
