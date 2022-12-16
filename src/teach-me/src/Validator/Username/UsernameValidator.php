@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\{
 
 class UsernameValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Username) {
             throw new UnexpectedTypeException($constraint, Username::class);
