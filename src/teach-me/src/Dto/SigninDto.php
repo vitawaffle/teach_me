@@ -2,6 +2,9 @@
 
 namespace App\Dto;
 
+use App\Entity\User;
+use App\Validator\Password\Password;
+use App\Validator\Unique\Unique;
 use App\Validator\Username\Username;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -9,9 +12,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SigninDto extends Dto
 {
     public function __construct(
-        #[NotBlank, Username]
+        #[
+            NotBlank,
+            Username,
+            Unique(entityClass: User::class, columnName: 'username')
+        ]
         public readonly ?string $username = null,
-        #[NotBlank]
+        #[NotBlank, Password]
         public readonly ?string $password = null,
     ) {
     }
