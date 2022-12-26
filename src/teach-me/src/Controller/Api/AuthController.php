@@ -18,8 +18,9 @@ class AuthController extends AppController
     }
 
     #[Route('/login', name: 'login', methods: 'POST')]
-    public function login(): void
+    public function login(): Response
     {
+        return new Response('Invalid login request', Response::HTTP_BAD_REQUEST);
     }
 
     #[Route('/signin', name: 'signin', methods: 'POST')]
